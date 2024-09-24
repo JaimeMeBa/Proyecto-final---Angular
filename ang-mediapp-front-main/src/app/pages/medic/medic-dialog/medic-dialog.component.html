@@ -1,0 +1,57 @@
+<mat-dialog-content>
+  <mat-toolbar>
+    <span>Medic Dialog</span>
+  </mat-toolbar>
+
+
+  <div class="example-container">
+    <mat-form-field>
+      <input matInput placeholder="Nombre *" [(ngModel)]="medic.primaryName" minlength="3" #primaryName="ngModel"
+        required />
+      <!-- se agrego un identificador de variable para pintar los campos nulos en color rojo y el  -->
+      <!-- se agrego el atributo required para indicar que el campo es obligatorio y no se puede dejar en blanco-->
+
+      <div *ngIf="primaryName.invalid && (primaryName.dirty || primaryName.touched)" class="invalid">
+        <!-- se agrega un evento de detonacion en caso de que el campo de texto sea tocado -->
+        <!-- se agrego la clase (invalid) para pintar los campos nulos en color rojo -->
+
+        <div *ngIf="primaryName.errors?.['required']">Campo Requerido.</div>
+      </div>
+      <!-- en caso de que el campo este vacio se detona un mensaje de campo requerido como cadena de texto marcada en color rojo-->
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Apellidos *" [(ngModel)]="medic.surname" minlength="3" #surname="ngModel" required />
+      <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="invalid">
+        <div *ngIf="surname.errors?.['required']">Campo Requerido.</div>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input type="number" matInput placeholder="ID Médico *" [(ngModel)]="medic.codMedic" #codMedic="ngModel"
+        pattern="^[0-9]{6}$" minlength="6" maxlength="6" required />
+      <!-- se agrega una expresion para validar la longitud de (6) caracteres de tipo numero y se añade un (minlength) para la longitud minima y (maxlength) para la longitud maxima que es de 6 en el campo, obligandolo al usuario a solo ingresar 6 caracteres numericos-->
+      <div *ngIf="codMedic.invalid && (codMedic.dirty || codMedic.touched)" class="invalid">El código medico debe
+        contener 6 números.
+      </div>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Fotografía del Médico *" [(ngModel)]="medic.photo" #photo="ngModel" required />
+      <div *ngIf="photo.invalid && (photo.dirty || photo.touched)" class="invalid">
+        <div *ngIf="photo.errors?.['required']">Es necesario adjuntar una Fotografía</div>
+      </div>
+    </mat-form-field>
+
+    <img mat-card-image [src]="medic.photo" alt="Photo of Medic" *ngIf="medic.photo" />
+  </div>
+
+
+  <button mat-raised-button color="primary" (click)="onSubmit(primaryName, surname, codMedic, photo)"
+    [disabled]="primaryName.invalid || surname.invalid || codMedic.invalid || photo.invalid" (click)="operate()">
+    Crear Médico
+  </button>
+  <!-- se agrega un envento (clic) de validacion de campos vacios en el boton crear medico respetando el formModule -->
+
+  <button mat-raised-button color="accent" (click)="close()">Cancelar</button>
+</mat-dialog-content>
